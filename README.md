@@ -19,7 +19,8 @@ What it do is:
 
 The easiest way to install bug-reference-github is probably to install
 it via the ELPA archive at
-[Marmalade](http://marmalade-repo.org/packages/bug-reference-github).
+[Marmalade](http://marmalade-repo.org/packages/bug-reference-github) or
+[MELPA](http://melpa.milkbox.net/#bug-reference-github).
 
 ELPA (package.el) is part of Emacs 24. For Emacs 23 see
 [Marmalade](http://marmalade-repo.org) for installation instructions.
