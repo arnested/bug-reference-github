@@ -42,6 +42,7 @@
 ;;; Code:
 
 (require 'vc)
+(require 'bug-reference)
 
 (defvar bug-reference-github-domains (list "github.com")
   "A list of GitHub domains.")
@@ -63,14 +64,13 @@ What it does is:
     the correct Github issue URL (we set it buffer locally).
 
 4. Enable `bug-reference-prog-mode'."
-  (when (and (or (not (boundp 'bug-reference-url-format))
-                 (null bug-reference-url-format))
-             (vc-git-root (or (buffer-file-name) default-directory)))
-    (let ((remote (shell-command-to-string "git ls-remote --get-url")))
-      (when (string-match (concat ".*" (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
-        (set (make-local-variable 'bug-reference-url-format)
-             (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
-        (bug-reference-prog-mode)))))
+  (unless bug-reference-url-format
+    (when (vc-git-root (or (buffer-file-name) default-directory))
+      (let ((remote (shell-command-to-string "git ls-remote --get-url")))
+        (when (string-match (concat ".*" (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
+          (set (make-local-variable 'bug-reference-url-format)
+               (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
+          (bug-reference-prog-mode))))))
 
 ;;;###autoload
 (add-hook 'find-file-hook 'bug-reference-github-set-url-format)
