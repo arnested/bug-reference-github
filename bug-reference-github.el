@@ -67,7 +67,7 @@ What it does is:
   (unless bug-reference-url-format
     (when (vc-git-root (or (buffer-file-name) default-directory))
       (let ((remote (shell-command-to-string "git ls-remote --get-url")))
-        (when (string-match (concat ".*" (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
+        (when (string-match (concat (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
           (set (make-local-variable 'bug-reference-url-format)
                (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
           (bug-reference-prog-mode))))))
