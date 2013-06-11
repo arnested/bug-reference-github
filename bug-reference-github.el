@@ -39,6 +39,14 @@
 
 ;; 4. Enable `bug-reference-prog-mode'.
 
+;; To have `bug-reference-github' check every opened file:
+
+;; (add-hook 'find-file-hook 'bug-reference-github-set-url-format)
+
+;; or to check just `prog-mode' buffers (i.e. most programming major modes):
+
+;; (add-hook 'prog-mode-hook 'bug-reference-github-set-url-format)
+
 ;;; Code:
 
 (require 'vc-git)
@@ -71,9 +79,6 @@ What it does is:
           (set (make-local-variable 'bug-reference-url-format)
                (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
           (bug-reference-prog-mode))))))
-
-;;;###autoload
-(add-hook 'find-file-hook 'bug-reference-github-set-url-format)
 
 
 
