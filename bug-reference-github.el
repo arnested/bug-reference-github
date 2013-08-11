@@ -41,7 +41,7 @@
 
 ;;; Code:
 
-(require 'vc)
+(require 'vc-git)
 (require 'bug-reference)
 
 (defvar bug-reference-github-domains (list "github.com")
