@@ -1,11 +1,11 @@
 ;;; bug-reference-github.el --- Automatically set `bug-reference-url-format' in Github repositories.
 
-;; Copyright (C) 2012 Arne Jørgensen
+;; Copyright (C) 2012, 2013 Arne Jørgensen
 
 ;; Author: Arne Jørgensen <arne@arnested.dk>
 ;; URL: https://github.com/arnested/bug-reference-github
 ;; Created: October 29, 2012
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Keywords: programming, tools
 
 ;; This software is free software: you can redistribute it and/or
@@ -27,7 +27,7 @@
 ;; Automatically set `bug-reference-url-format' and enable
 ;; `bug-reference-prog-mode' buffers from Github repositories.
 
-;; What it do is: 
+;; What it does is:
 
 ;; 1. If `bug-reference-url-format' is not set and this appears to be
 ;;     part of a git working copy (we can locate a .git/config).
@@ -39,7 +39,18 @@
 
 ;; 4. Enable `bug-reference-prog-mode'.
 
+;; To have `bug-reference-github' check every opened file:
+
+;; (add-hook 'find-file-hook 'bug-reference-github-set-url-format)
+
+;; or to check just `prog-mode' buffers (i.e. most programming major modes):
+
+;; (add-hook 'prog-mode-hook 'bug-reference-github-set-url-format)
+
 ;;; Code:
+
+(require 'vc-git)
+(require 'bug-reference)
 
 (defvar bug-reference-github-domains (list "github.com")
   "A list of GitHub domains.")
@@ -50,7 +61,7 @@
 Automatically set `bug-reference-url-format' and enable
 `bug-reference-prog-mode' buffers from Github repositories.
 
-What it do is: 
+What it does is:
 
 1. If `bug-reference-url-format' is not set and this appears to be
     part of a git working copy (we can locate a .git/config).
@@ -61,19 +72,13 @@ What it do is:
     the correct Github issue URL (we set it buffer locally).
 
 4. Enable `bug-reference-prog-mode'."
-  (when (and (or (not (boundp 'bug-reference-url-format))
-                 (null bug-reference-url-format))
-             (locate-dominating-file (or (buffer-file-name) default-directory) ".git/config"))
-    (let ((remote (with-output-to-string
-                    (with-current-buffer standard-output
-                      (call-process (executable-find "git") nil (list t nil) nil "ls-remote" "--get-url")))))
-      (when (string-match (concat ".*" (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
-        (set (make-local-variable 'bug-reference-url-format)
-             (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
-        (bug-reference-prog-mode)))))
-
-;;;###autoload
-(add-hook 'find-file-hook 'bug-reference-github-set-url-format)
+  (unless bug-reference-url-format
+    (when (vc-git-root (or (buffer-file-name) default-directory))
+      (let ((remote (shell-command-to-string "git ls-remote --get-url")))
+        (when (string-match (concat (regexp-opt bug-reference-github-domains t) "[/:]\\(.+?\\)\\(\\.git\\)?$") remote)
+          (set (make-local-variable 'bug-reference-url-format)
+               (concat "https://" (match-string-no-properties 1 remote) "/" (match-string-no-properties 2 remote) "/issues/%s"))
+          (bug-reference-prog-mode))))))
 
 
 
