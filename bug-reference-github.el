@@ -1,11 +1,11 @@
 ;;; bug-reference-github.el --- Automatically set `bug-reference-url-format' in Github repositories.
 
-;; Copyright (C) 2012 Arne Jørgensen
+;; Copyright (C) 2012, 2013 Arne Jørgensen
 
 ;; Author: Arne Jørgensen <arne@arnested.dk>
 ;; URL: https://github.com/arnested/bug-reference-github
 ;; Created: October 29, 2012
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Keywords: programming, tools
 
 ;; This software is free software: you can redistribute it and/or
