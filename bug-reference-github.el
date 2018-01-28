@@ -1,11 +1,11 @@
-;;; bug-reference-github.el --- Automatically set `bug-reference-url-format' in Github repositories.
+;;; bug-reference-github.el --- Set `bug-reference-url-format' in Github repos
 
-;; Copyright (C) 2012, 2013 Arne Jørgensen
+;; Copyright (C) 2012, 2013, 2018 Arne Jørgensen
 
 ;; Author: Arne Jørgensen <arne@arnested.dk>
 ;; URL: https://github.com/arnested/bug-reference-github
 ;; Created: October 29, 2012
-;; Version: 0.2.0
+;; Version: 1.0.0
 ;; Keywords: programming, tools
 
 ;; This software is free software: you can redistribute it and/or
@@ -59,7 +59,7 @@
 (defun bug-reference-github-set-url-format ()
   "Automatically set `bug-reference-url-format'.
 Automatically set `bug-reference-url-format' and enable
-`bug-reference-prog-mode' buffers from Github repositories.
+function `bug-reference-prog-mode' buffers from Github repositories.
 
 What it does is:
 
@@ -71,7 +71,7 @@ What it does is:
 3. If the remote matches github.com set `bug-reference-url-format' to
     the correct Github issue URL (we set it buffer locally).
 
-4. Enable `bug-reference-prog-mode'."
+4. Enable function `bug-reference-prog-mode'."
   (unless bug-reference-url-format
     (when (vc-git-root (or (buffer-file-name) default-directory))
       (let ((remote (shell-command-to-string "git ls-remote --get-url")))
