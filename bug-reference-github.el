@@ -5,7 +5,7 @@
 ;; Author: Arne Jørgensen <arne@arnested.dk>
 ;; URL: https://github.com/arnested/bug-reference-github
 ;; Created: October 29, 2012
-;; Version: 0.2.0
+;; Version: 1.0.0
 ;; Keywords: programming, tools
 
 ;; This software is free software: you can redistribute it and/or
