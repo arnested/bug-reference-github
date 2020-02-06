@@ -19,9 +19,9 @@ README: README.md
 	$(PANDOC) -t plain -o $@ $^
 
 $(ARCHIVE_NAME)-pkg.el: $(ARCHIVE_NAME).el
-	$(CASK) package
+	$(CASK) pkg-file
 
-# create a tar ball in package.el format for uploading to http://marmalade-repo.org
+# create a tar ball in package.el format
 $(PACKAGE_NAME).tar: README $(ARCHIVE_NAME).el $(ARCHIVE_NAME)-pkg.el $(ARCHIVE_NAME).info dir
 	$(TAR) -c -s "@^@$(PACKAGE_NAME)/@" -f $(PACKAGE_NAME).tar $^
 
